@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login - <%= name %></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+        <style>
+            html {
+                margin: 0;
+                padding: 0;
+                text-decoration: none;
+            }
+            body {
+                font-family: 'Open Sans', sans-serif;
+            }
+            section {
+                margin-top: 20vh;
+            }
+            form {
+                display: flex;
+                flex-flow: column;
+            }
+            .form-body {
+                min-width: 260px;
+                max-width: 400px;
+                margin: 0 auto;
+                padding: 20px 20px;
+                box-shadow: 1px 1px 4px grey;
+                border-radius: 10px;
+            }
+            .form-body li {
+                color: red;
+                font-size: 0.8rem;                
+            }
+            .form-body h2 {
+                font-size: 120%;
+                text-align: center;
+                color:rgba(38, 38, 38);
+            }
+            .form-body sub {
+                font-size: 80%;
+                color: rgba(64, 64, 64, 0.3);
+            }
+            .entry {
+                border: .5px solid grey;
+                border-radius: 5px;
+                height: 35px;
+                font-size: 1.2rem;
+                color: grey;
+                padding: 0 10px;
+                margin: 5px 0;
+            }
+            label {
+                font-size: 1.15rem;
+            }
+            .controlls {
+                margin-top: 10px;
+                display: flex;
+                flex-flow: row;
+                justify-content: space-around;  
+            }
+            .controlls input {
+                width: 95px;
+                height: 40px;
+                background-color: #2298FF;
+                border: none;
+                border-radius: 5px;
+                color: #ffffff;
+                font-size: 1rem;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <section>
+            <div class="form-body">
+                <h2>Authentication<sub><%= name %></sub></h2>
+                <% if (error) { %>
+                    <ul><li><%= error %></li></ul>
+                <% } %>
+                <form method="POST">
+                    <label>Email:</label>
+                    <input type="email" name="email" minlength="5" required class="entry">
+                    <label>Password:</label>
+                    <input type="password" name="password" minlength="5" required class="entry">
+                    <div class="controlls">
+                        <% if (service) { %>
+                            <input type="button" value="Register" onclick="location.href='/auth/register?service=<%= service %>'">
+                        <% } else { %>
+                            <input type="button" value="Register" onclick="location.href='/auth/register'">
+                        <% } %>
+                        <input type="submit" value="Login">
+                    </div>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

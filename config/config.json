@@ -1,0 +1,11 @@
+{
+    "SSO_NAME": "Test",
+    "HOST": "127.0.0.1",
+    "PORT": 3001,
+    "SECRET": "secret",
+    "DB_URI": "mongodb://127.0.0.1:27017/test",
+    "DOMAIN": "127.0.0.1",
+    "DEFAULT_REDIRECT": "https://andreifedotov.com",
+    "ALLOWED_HOSTS": ["127.0.0.1:3001", "andreifedotov.com"],
+    "MIN_PASSWORD_LENGTH": 6
+}
