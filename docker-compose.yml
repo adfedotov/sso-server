@@ -1,0 +1,43 @@
+version: '3'
+services:
+  sso-server:
+    container_name: SSO_Server
+    build: .
+    image: sso-server
+    restart: unless-stopped
+    env_file: .env
+    environment: 
+      - SSO_NAME=$SSO_NAME
+      - HOST=$HOST
+      - PORT=$PORT
+      - SECRET=$SECRET
+      - DOMAIN=$DOMAIN
+      - DEFAULT_REDIRECT=$DEFAULT_REDIRECT
+      - ALLOWED_HOSTS=$ALLOWED_HOSTS
+      - MIN_PASSWORD_LENGTH=$MIN_PASSWORD_LENGTH
+      - MONGO_USER=$MONGO_USER
+      - MONGO_PASS=$MONGO_PASS
+      - MONGO_HOST=$MONGO_HOST
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB
+    volumes:
+      - .:/usr/src/app/
+      - /usr/src/app/node_modules
+    ports:
+      - "3001:3001"
+    depends_on:
+      - sso-db
+  sso-db:
+    container_name: SSO_Database
+    image: mongo
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_DATABASE=sso
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root_password
+    volumes:
+      # Creates a new non-root user to access the db
+      - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
+      - ./db-volume:/data/db
+    ports:
+      - "27017:27017"
