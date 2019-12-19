@@ -1,7 +1,16 @@
 const mongoose = require('mongoose');
-const dbUri = require('../config/config.json').DB_URI;
+const config = require('../config/config');
+const dbUri = `mongodb://${config.MONGO_USER}:${config.MONGO_PASS}@${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
 
 let _db;
+
+const options = {
+    useNewUrlParser: true,
+    autoReconnect: true,
+    reconnectTries: 10,
+    reconnectInterval: 5000,
+    connectTimeoutMS: 50000
+}
 
 module.exports = {
     connect: async () => {
@@ -13,12 +22,13 @@ module.exports = {
 
         _db.on('error', err => {
             console.log('MongoDB connection error.\n' + err);
-            mongoose.disconnect();
+            setTimeout(async () => {
+                console.log('Retrying to connect...');
+                await mongoose.connect(dbUri, options).catch(err => {});
+            }, 10000);
         });
-        await mongoose.connect(dbUri, {useNewUrlParser: true, autoReconnect: true})
-        .catch(err => {
-            console.log('MongoDB connection error: ' + err);
-        });
+
+        await mongoose.connect(dbUri, options).catch(err => {});
     },
     getDb: () => {
         return _db;

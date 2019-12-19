@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const config = require('../config/config.json');
+const config = require('../config/config');
 
 router.post('/', (req, res) => {
     // TODO: Check credentials of the requesting server public/private keys?

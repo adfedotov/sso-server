@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const config = require('../config/config.json');
+const config = require('../config/config');
 
 /**
  * Middleware to check if user already has a token
@@ -29,7 +29,6 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-    // Check for login
     const email = (req.body.email) ? req.body.email : '';
     const password = (req.body.password) ? req.body.password : '';
 
@@ -55,7 +54,6 @@ router.post('/login', (req, res) => {
                 }, secret, {algorithm: 'HS256', expiresIn: '24h'});
                 // TODO: Change secure to true
                 res.cookie('access_token', token, {domain: `${config.DOMAIN}`, httpOnly: true, secure: false}); 
-                // Check if service is  valid and redirect to it
                 if (isValidService(req.query.service)) {
                     res.redirect(req.query.service);
                 } else {
@@ -103,15 +101,28 @@ router.post('/register', (req, res) => { // body might not contain, maybe easier
             console.log('MongoDB Error while registering a new user: ' + err);
             return res.render('register', {name: config.SSO_NAME, error: 'User with this email is already registered', data: null});
         } else {
-            if (req.query.service)
-                return res.redirect(`/auth/login?service=${res.query.service}`);
-            else 
+            if (req.query.service) {
+                return res.redirect('/auth/login?service=' + req.query.service);
+            } else {
                 return res.redirect('/auth/login');
+            }
         }
         
     });
-    
-    res.render('register', {name: config.SSO_NAME, error: error, data: {f: firstName, l: lastName, email: email}});
+});
+
+// ----LOGOUT----
+
+router.get('/logout', (req, res) => {
+    if (req.cookies.access_token) {
+        res.clearCookie('access_token');
+    }
+
+    if (isValidService(req.query.service)) {
+        return res.redirect(req.query.service);
+    }
+
+    res.redirect('/auth/login');
 });
 
 /**
