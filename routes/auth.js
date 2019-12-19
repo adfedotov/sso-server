@@ -111,7 +111,7 @@ router.post('/register', (req, res) => { // body might not contain, maybe easier
     });
 });
 
-// ----REGISTER----
+// ----LOGOUT----
 
 router.get('/logout', (req, res) => {
     if (req.cookies.access_token) {
