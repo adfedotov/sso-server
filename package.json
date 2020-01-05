@@ -1,22 +1,29 @@
 {
   "name": "sso-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "An SSO server implementation that can be used to handle authentication across subdomains (and different domains in the future).",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "mocha tests/tests.js --exit",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Andrei Fedotov <anddfedotov@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
+    "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.2.2"
   }
 }

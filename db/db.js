@@ -6,10 +6,9 @@ let _db;
 
 const options = {
     useNewUrlParser: true,
-    autoReconnect: true,
-    reconnectTries: 10,
-    reconnectInterval: 5000,
-    connectTimeoutMS: 50000
+    useFindAndModify: false,
+    useCreateIndex: true,
+    useUnifiedTopology: true
 }
 
 module.exports = {

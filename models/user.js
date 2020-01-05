@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}, {collection: process.env.MONGO_USER_COLLECTION});
 
 UserSchema.statics.hashPassword = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync());

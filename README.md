@@ -25,6 +25,7 @@ MONGO_PASS=password
 MONGO_HOST=sso-db   # If using docker-compose, use the name of db service
 MONGO_PORT=27017
 MONGO_DB=sso
+MONGO_USER_COLLECTION=users   # Which colleciton to use
 ```
 
 ### Starting
@@ -36,6 +37,7 @@ docker-compose up
 Now access it on 127.0.0.1:port/auth/login
 
 #### Using docker
+Setup using dev.env
 Create image and run it
 ```bash
 docker build -t sso-server . 
@@ -44,6 +46,7 @@ docker run -d -p [port]:[port] --name SSO-server sso-server
 Now access it on 127.0.0.1:port/auth/login
 
 #### Not using docker
+Setup using dev.env
 Install dependencies and run node
 ```bash
 npm install

@@ -8,3 +8,5 @@ db-volume
 Dockerfile
 .dockerignore
 .env
+dev_local.env
+dev_compose.env
