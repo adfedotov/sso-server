@@ -9,7 +9,13 @@ const config = require('../config/config');
  */
 router.use('/login', (req, res, next) => {
     if (req.cookies.access_token) {
-        if (jwt.verify(req.cookies.access_token, config.SECRET)) {
+        let verify = null;
+        try {
+            verify = jwt.verify(req.cookies.access_token, config.SECRET);
+        } catch(err) {
+            console.log('Error verifying token');
+        }
+        if (verify) {
             if (isValidService(req.query.service)) {
                 return res.redirect(req.query.service);
             } else {
@@ -53,7 +59,7 @@ router.post('/login', (req, res) => {
                     admin: docs.admin
                 }, secret, {algorithm: 'HS256', expiresIn: '24h'});
                 // TODO: Change secure to true
-                res.cookie('access_token', token, {domain: `${config.DOMAIN}`, httpOnly: true, secure: false}); 
+                res.cookie('access_token', token, {domain: `${config.DOMAIN}`, httpOnly: true, secure: true}); 
                 if (isValidService(req.query.service)) {
                     res.redirect(req.query.service);
                 } else {
@@ -72,7 +78,7 @@ router.get('/register', (req, res) => {
     res.render('register', {name: config.SSO_NAME, error: null, data: null});
 });
 
-router.post('/register', (req, res) => { // body might not contain, maybe easier to implement it as api
+router.post('/register', (req, res) => { 
     const firstName = (req.body.firstName) ? req.body.firstName : '';
     const lastName = (req.body.lastName) ? req.body.lastName : '';
     const email = (req.body.email) ? req.body.email : '';
@@ -115,14 +121,14 @@ router.post('/register', (req, res) => { // body might not contain, maybe easier
 
 router.get('/logout', (req, res) => {
     if (req.cookies.access_token) {
-        res.clearCookie('access_token');
+        res.clearCookie('access_token', {domain: `${config.DOMAIN}`});
     }
 
     if (isValidService(req.query.service)) {
         return res.redirect(req.query.service);
+    } else {
+        return res.redirect('/auth/login');
     }
-
-    res.redirect('/auth/login');
 });
 
 /**

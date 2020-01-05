@@ -20,6 +20,7 @@ services:
       - MONGO_HOST=$MONGO_HOST
       - MONGO_PORT=$MONGO_PORT
       - MONGO_DB=$MONGO_DB
+      - MONGO_USER_COLLECTION=$MONGO_USER_COLLECTION
     volumes:
       - .:/usr/src/app/
       - /usr/src/app/node_modules

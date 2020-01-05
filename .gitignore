@@ -1,3 +1,5 @@
 node_modules/
 db-volume/
 .env
+dev_local.env
+dev_compose.env
